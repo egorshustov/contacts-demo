@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="themeColorPrimary" format="reference"/>
+    <attr name="themeColorSecondary" format="reference"/>
+    <attr name="themeColorTertiary" format="reference"/>
+    <attr name="themeColorAccent" format="reference"/>
+    <attr name="themeTextColorPrimary" format="reference"/>
+    <attr name="themeTextColorSecondary" format="reference"/>
+    <attr name="themeTextColorClickable" format="reference"/>
+    <attr name="themeNavigationHeaderBackgroundColor" format="reference"/>
+    <attr name="themeNavigationItemBackgroundColor" format="reference"/>
+    <attr name="themeNavigationSelectedTextColor" format="reference"/>
+</resources>

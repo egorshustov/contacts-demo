@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorLightSteelBlue">#AAC5E2</color>
+    <color name="colorDodgerBlue">#269DF7</color>
+    <color name="colorRegalBlue">#123359</color>
+    <color name="colorSapphire">#112559</color>
+    <color name="colorMinsk">#393185</color>
+    <color name="colorMidnightExpress">#101D32</color>
+    <color name="colorOceanGreen">#4C9069</color>
+    <color name="colorAmazon">#3D7254</color>
+    <color name="colorComo">#4D8F69</color>
+    <color name="colorBlackTransparentOne">#E5000000</color>
+    <color name="colorBlackTransparentTwo">#8A000000</color>
+</resources>

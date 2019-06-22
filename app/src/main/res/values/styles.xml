@@ -1,0 +1,48 @@
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">?attr/themeColorPrimary</item>
+        <item name="colorPrimaryDark">?attr/themeColorSecondary</item>
+        <item name="colorAccent">?themeColorAccent</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Green">
+        <item name="themeColorPrimary">@color/colorOceanGreen</item>
+        <item name="themeColorSecondary">@color/colorAmazon</item>
+        <item name="themeColorTertiary">@color/colorWhite</item>
+        <item name="themeColorAccent">@color/colorComo</item>
+        <item name="themeTextColorPrimary">@color/colorBlackTransparentOne</item>
+        <item name="themeTextColorSecondary">@color/colorBlackTransparentTwo</item>
+        <item name="themeTextColorClickable">@color/colorDodgerBlue</item>
+        <item name="themeNavigationHeaderBackgroundColor">@drawable/side_nav_bar</item>
+        <item name="themeNavigationItemBackgroundColor">@color/colorWhite</item>
+        <item name="themeNavigationSelectedTextColor">@color/colorComo</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Blue">
+        <item name="themeColorPrimary">@color/colorMidnightExpress</item>
+        <item name="themeColorSecondary">@color/colorMidnightExpress</item>
+        <item name="themeColorTertiary">@color/colorRegalBlue</item>
+        <item name="themeColorAccent">@color/colorDodgerBlue</item>
+        <item name="themeTextColorPrimary">@color/colorWhite</item>
+        <item name="themeTextColorSecondary">@color/colorLightSteelBlue</item>
+        <item name="themeTextColorClickable">@color/colorDodgerBlue</item>
+        <item name="themeNavigationHeaderBackgroundColor">@color/colorMidnightExpress</item>
+        <item name="themeNavigationItemBackgroundColor">@color/colorMidnightExpress</item>
+        <item name="themeNavigationSelectedTextColor">@color/colorDodgerBlue</item>
+    </style>
+
+    <style name="NavigationStyle">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:itemBackground">?themeNavigationItemBackgroundColor</item>
+        <item name="colorControlHighlight">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+</resources>
