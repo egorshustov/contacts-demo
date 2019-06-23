@@ -1,10 +1,12 @@
 package com.egorshustov.contactsdemo.contactlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.egorshustov.contactsdemo.R
 import com.egorshustov.contactsdemo.data.source.ThemesRepository.Companion.GREEN_THEME_ID
@@ -23,6 +25,9 @@ class ContactListActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         setSupportActionBar(toolbar_contact_list)
 
         setDrawerListeners()
+        observeLiveUpdateContactsResponse()
+
+        contactListViewModel.updateContacts(true)
     }
 
     override fun onResume() {
@@ -75,5 +80,15 @@ class ContactListActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
         }
         return true
+    }
+
+    private fun observeLiveUpdateContactsResponse() {
+        contactListViewModel.getLiveUpdateContactsResponse().observe(this, Observer {
+            Log.d(TAG, it)
+        })
+    }
+
+    private companion object {
+        const val TAG = "ContactListActivity"
     }
 }
