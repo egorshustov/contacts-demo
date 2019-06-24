@@ -1,5 +1,6 @@
 package com.egorshustov.contactsdemo.contactlist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -8,7 +9,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProviders
 import com.egorshustov.contactsdemo.R
+import com.egorshustov.contactsdemo.contact.ContactActivity
+import com.egorshustov.contactsdemo.data.Contact
 import com.egorshustov.contactsdemo.data.source.ThemesRepository.Companion.GREEN_THEME_ID
+import com.egorshustov.contactsdemo.utils.ConstantsUtils.EXTRA_CONTACT
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_contact_list.*
 import kotlinx.android.synthetic.main.app_bar_contact_list.*
@@ -25,20 +29,7 @@ class ContactListActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         setSupportActionBar(toolbar_contact_list)
 
         setDrawerListeners()
-
-        search_contact_list.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                contactListViewModel.filterContacts(newText)
-                return false
-            }
-        })
-
-        supportFragmentManager.beginTransaction()
-            .add(R.id.layout_fragment, ContactListFragment.newInstance()).commit()
+        setViewsListeners()
 
         contactListViewModel.updateContacts(true)
     }
@@ -68,6 +59,31 @@ class ContactListActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         drawer_contact_list.addDrawerListener(toggle)
         toggle.syncState()
         nav_contact_list.setNavigationItemSelectedListener(this)
+    }
+
+    private fun setViewsListeners() {
+        search_contact_list.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                contactListViewModel.filterContacts(newText)
+                return false
+            }
+        })
+
+        val contactListFragment = ContactListFragment.newInstance()
+        contactListFragment.contactListAdapter.setOnContactClickListener(object :
+            ContactListAdapter.OnContactClickListener {
+            override fun onContactClick(contact: Contact) {
+                val intent = Intent(this@ContactListActivity, ContactActivity::class.java)
+                intent.putExtra(EXTRA_CONTACT, contact)
+                startActivity(intent)
+            }
+        })
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.layout_fragment, contactListFragment).commit()
     }
 
     override fun onBackPressed() {

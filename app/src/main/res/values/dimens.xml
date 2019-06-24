@@ -7,7 +7,10 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="item_contact_padding">10dp</dimen>
     <dimen name="item_contact_border_height">2dp</dimen>
+    <dimen name="activity_contact_text_padding">7dp</dimen>
+    <dimen name="activity_contact_layout_padding">10dp</dimen>
 
+    <dimen name="text_size_biggest">22sp</dimen>
     <dimen name="text_size_big">18sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_small">14sp</dimen>

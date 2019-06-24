@@ -16,4 +16,11 @@ object TimeUtils {
         calendar.time = SimpleDateFormat(pattern, Locale.getDefault()).parse(timeString)
         return (calendar.timeInMillis / MILLISECONDS_IN_SECOND).toInt()
     }
+
+    fun unixSecondsToDateString(unixSeconds: Int?): String {
+        unixSeconds ?: return ""
+        val calendar = Calendar.getInstance(TimeZone.getDefault())
+        calendar.timeInMillis = unixSeconds.toLong() * MILLISECONDS_IN_SECOND.toLong()
+        return SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(calendar.time)
+    }
 }

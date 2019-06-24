@@ -8,6 +8,5 @@
     <string name="action_search">Поиск</string>
 
     <string name="nav_contact_list">Контакты</string>
-    <string name="nav_about_developer">О разработчике</string>
     <string name="nav_theme_change">Сменить тему</string>
 </resources>

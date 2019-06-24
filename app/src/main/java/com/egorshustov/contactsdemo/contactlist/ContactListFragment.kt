@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_contact_list.view.*
 class ContactListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var fragmentView: View
     private lateinit var contactListViewModel: ContactListViewModel
-    private val contactListAdapter = ContactListAdapter()
+    val contactListAdapter = ContactListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,7 +81,7 @@ class ContactListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     companion object {
-        const val TAG = "ContactListFragment"
+        private const val TAG = "ContactListFragment"
         @JvmStatic
         fun newInstance() = ContactListFragment()
     }

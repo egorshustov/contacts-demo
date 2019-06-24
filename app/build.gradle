@@ -23,6 +23,10 @@ android {
         }
     }
 
+    androidExtensions {
+        experimental = true
+    }
+
     kapt {
         arguments {
             arg("room.schemaLocation", "$projectDir/schemas".toString())
