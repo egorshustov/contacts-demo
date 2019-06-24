@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/item_contact_padding"
+            android:background="?themeColorTertiary">
+
+        <TextView
+                android:id="@+id/text_contact_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?themeTextColorPrimary"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+                android:id="@+id/text_contact_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?themeTextColorPrimary"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp" app:layout_constraintTop_toBottomOf="@+id/text_contact_name"
+                android:layout_marginTop="8dp"/>
+
+        <TextView
+                android:id="@+id/text_contact_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?themeTextColorPrimary"
+                android:textSize="@dimen/text_size_small"
+                android:gravity="end"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_contact_border_height"
+            android:background="?themeContactItemBorderColor"/>
+
+</LinearLayout>

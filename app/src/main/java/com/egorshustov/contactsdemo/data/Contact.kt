@@ -18,4 +18,10 @@ data class Contact(
     val educationPeriod: EducationPeriod?,
     @ColumnInfo(name = "fetch_time_unix_millis")
     var fetchTimeUnixMillis: Long?
-)
+) {
+    fun contentsEquals(otherContact: Contact): Boolean {
+        return name == otherContact.name &&
+                phone == otherContact.phone &&
+                height == otherContact.height
+    }
+}

@@ -9,8 +9,8 @@ import com.egorshustov.contactsdemo.data.Contact
 
 @Dao
 interface ContactsDao {
-    @Query("select * from contacts order by name")
-    fun getLiveContacts(): LiveData<List<Contact>>
+    @Query("select * from contacts where (:filter is null or name like :filter or phone like :filter) order by name")
+    fun getLiveContacts(filter: String?): LiveData<List<Contact>?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertContacts(contactList: List<Contact>)

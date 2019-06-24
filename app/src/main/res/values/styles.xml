@@ -14,14 +14,15 @@
     <style name="AppTheme.NoActionBar.Green">
         <item name="themeColorPrimary">@color/colorOceanGreen</item>
         <item name="themeColorSecondary">@color/colorAmazon</item>
-        <item name="themeColorTertiary">@color/colorWhite</item>
+        <item name="themeColorTertiary">@color/colorSnow</item>
         <item name="themeColorAccent">@color/colorComo</item>
         <item name="themeTextColorPrimary">@color/colorBlackTransparentOne</item>
         <item name="themeTextColorSecondary">@color/colorBlackTransparentTwo</item>
         <item name="themeTextColorClickable">@color/colorDodgerBlue</item>
         <item name="themeNavigationHeaderBackgroundColor">@drawable/side_nav_bar</item>
-        <item name="themeNavigationItemBackgroundColor">@color/colorWhite</item>
+        <item name="themeNavigationItemBackgroundColor">@color/colorSnow</item>
         <item name="themeNavigationSelectedTextColor">@color/colorComo</item>
+        <item name="themeContactItemBorderColor">@color/colorWhisper</item>
     </style>
 
     <style name="AppTheme.NoActionBar.Blue">
@@ -35,6 +36,13 @@
         <item name="themeNavigationHeaderBackgroundColor">@color/colorMidnightExpress</item>
         <item name="themeNavigationItemBackgroundColor">@color/colorMidnightExpress</item>
         <item name="themeNavigationSelectedTextColor">@color/colorDodgerBlue</item>
+        <item name="themeContactItemBorderColor">@color/colorMidnightExpress</item>
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColor">?themeTextColorPrimary</item>
+        <item name="android:textColorHint">?themeTextColorPrimary</item>
+        <item name="android:editTextColor">?themeTextColorPrimary</item>
     </style>
 
     <style name="NavigationStyle">

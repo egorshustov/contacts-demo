@@ -10,4 +10,5 @@
     <attr name="themeNavigationHeaderBackgroundColor" format="reference"/>
     <attr name="themeNavigationItemBackgroundColor" format="reference"/>
     <attr name="themeNavigationSelectedTextColor" format="reference"/>
+    <attr name="themeContactItemBorderColor" format="reference"/>
 </resources>

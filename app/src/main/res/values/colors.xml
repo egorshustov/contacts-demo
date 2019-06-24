@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorSnow">#FAFAFA</color>
+    <color name="colorWhisper">#E7E7E7</color>
     <color name="colorLightSteelBlue">#AAC5E2</color>
     <color name="colorDodgerBlue">#269DF7</color>
     <color name="colorRegalBlue">#123359</color>

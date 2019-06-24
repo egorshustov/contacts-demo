@@ -1,7 +1,7 @@
 package com.egorshustov.contactsdemo.data.source.remote
 
 import com.egorshustov.contactsdemo.data.Contact
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -9,7 +9,7 @@ import retrofit2.http.Url
 
 interface NetworkApi {
     @GET
-    fun getContacts(@Url url: String): Call<List<Contact>?>
+    suspend fun getContacts(@Url url: String): Response<List<Contact>?>
 
     companion object Factory {
         val contactsUrlList = listOf(

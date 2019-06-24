@@ -5,6 +5,8 @@
     <dimen name="nav_header_padding_bottom">20dp</dimen>
     <dimen name="nav_header_height">110dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="item_contact_padding">10dp</dimen>
+    <dimen name="item_contact_border_height">2dp</dimen>
 
     <dimen name="text_size_big">18sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>

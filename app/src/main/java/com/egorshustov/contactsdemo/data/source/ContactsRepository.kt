@@ -2,6 +2,7 @@ package com.egorshustov.contactsdemo.data.source
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.egorshustov.contactsdemo.data.Contact
 import com.egorshustov.contactsdemo.data.source.local.AppDatabase
@@ -9,7 +10,7 @@ import com.egorshustov.contactsdemo.data.source.local.ContactsDao
 import com.egorshustov.contactsdemo.data.source.remote.NetworkApi
 import com.egorshustov.contactsdemo.utils.TimeUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils.MILLISECONDS_IN_SECOND
-import retrofit2.Call
+import com.egorshustov.contactsdemo.utils.TimeUtils.timeStringToUnixSeconds
 import retrofit2.Response
 
 class ContactsRepository(application: Application) {
@@ -22,7 +23,8 @@ class ContactsRepository(application: Application) {
         networkApi = NetworkApi.create()
     }
 
-    fun updateContacts(checkFetchTime: Boolean, liveResponseMessage: MutableLiveData<String>) {
+    suspend fun updateContacts(checkFetchTime: Boolean, liveResponseMessage: MutableLiveData<String>) {
+        Log.d(TAG, "updateContacts: ${Thread.currentThread().name}")
         if (checkFetchTime) {
             val oldestFetchTimeInUnixMillis = contactDao.getOldestFetchTime() ?: 0
             val currentTimeInUnixMillis = TimeUtils.getCurrentTimeInUnixMillis()
@@ -32,25 +34,44 @@ class ContactsRepository(application: Application) {
             }
         }
 
-        NetworkApi.contactsUrlList.forEach {
-            networkApi.getContacts(it).enqueue(object : retrofit2.Callback<List<Contact>?> {
-                override fun onFailure(call: Call<List<Contact>?>, t: Throwable) {
-                    Log.e(TAG, t.toString())
-                    liveResponseMessage.value = t.toString()
-                }
+        NetworkApi.contactsUrlList.forEach lit@{ contactsUrl ->
+            var response: Response<List<Contact>?>? = null
+            try {
+                response = networkApi.getContacts(contactsUrl)
+            } catch (e: Exception) {
+                liveResponseMessage.postValue(e.toString())
+            }
 
-                override fun onResponse(call: Call<List<Contact>?>, response: Response<List<Contact>?>) {
-                    liveResponseMessage.value = response.message()
-                    if (!response.isSuccessful) {
-                        return
-                    }
-                    val fetchTimeInUnixMillis = TimeUtils.getCurrentTimeInUnixMillis()
-                    response.body()?.forEach { contact ->
-                        contact.fetchTimeUnixMillis = fetchTimeInUnixMillis
-                    }
-                }
-            })
+            response ?: return@lit
+            liveResponseMessage.postValue(response.message())
+            val contactList: List<Contact>? = response.body()
+            if (!response.isSuccessful || contactList == null) {
+                return@lit
+            }
+            contactDao.insertContacts(fillContactListData(contactList))
         }
+    }
+
+    private fun fillContactListData(contactList: List<Contact>): List<Contact> {
+        val fetchTimeInUnixMillis = TimeUtils.getCurrentTimeInUnixMillis()
+        val timePattern = "yyyy-MM-dd'T'HH:mm:ssZ"
+
+        contactList.forEach { contact ->
+            contact.fetchTimeUnixMillis = fetchTimeInUnixMillis
+            contact.educationPeriod?.startUnixSeconds =
+                timeStringToUnixSeconds(timePattern, contact.educationPeriod?.startDateTimeString)
+            contact.educationPeriod?.endUnixSeconds =
+                timeStringToUnixSeconds(timePattern, contact.educationPeriod?.endDateTimeString)
+        }
+        return contactList
+    }
+
+    fun getLiveContacts(filter: String?): LiveData<List<Contact>?> {
+        val filterText = when {
+            (filter.isNullOrBlank() || filter == "") -> null
+            else -> "%$filter%"
+        }
+        return contactDao.getLiveContacts(filterText)
     }
 
     private companion object {
