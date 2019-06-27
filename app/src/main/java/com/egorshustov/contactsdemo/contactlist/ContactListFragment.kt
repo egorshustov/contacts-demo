@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -38,8 +36,8 @@ class ContactListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         fragmentView.layout_swipe_refresh.setOnRefreshListener(this)
-        val fragmentActivity = activity as FragmentActivity
-        contactListViewModel = ViewModelProviders.of(fragmentActivity).get(ContactListViewModel::class.java)
+        val fragmentActivity = activity as ContactListActivity
+        contactListViewModel = fragmentActivity.obtainViewModel()
 
         observeMediatorLiveContacts()
         observeLiveUpdateContactsResponse()

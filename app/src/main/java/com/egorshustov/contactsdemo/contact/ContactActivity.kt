@@ -6,33 +6,24 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProviders
 import com.egorshustov.contactsdemo.R
+import com.egorshustov.contactsdemo.data.Contact
 import com.egorshustov.contactsdemo.data.source.ThemesRepository
 import com.egorshustov.contactsdemo.utils.ConstantsUtils.EXTRA_CONTACT
 import com.egorshustov.contactsdemo.utils.TimeUtils.unixSecondsToDateString
+import com.egorshustov.contactsdemo.utils.obtainViewModel
 import kotlinx.android.synthetic.main.activity_contact.*
 
 class ContactActivity : AppCompatActivity() {
     private lateinit var contactViewModel: ContactViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getExtrasAndInitViewModel()
+        contactViewModel = obtainViewModel(ContactViewModel::class.java)
         setTheme(getCurrentTheme())
         setContentView(R.layout.activity_contact)
         setActionBar()
         initTextViews()
         setListeners()
-    }
-
-    private fun getExtrasAndInitViewModel() {
-        contactViewModel = ViewModelProviders.of(
-            this,
-            ContactViewModelFactory(
-                this.application,
-                intent.getParcelableExtra(EXTRA_CONTACT)
-            )
-        ).get(ContactViewModel::class.java)
     }
 
     private fun getCurrentTheme(): Int {
@@ -64,7 +55,7 @@ class ContactActivity : AppCompatActivity() {
     }
 
     private fun initTextViews() {
-        val contact = contactViewModel.contact
+        val contact = intent.getParcelableExtra<Contact>(EXTRA_CONTACT)
         text_name.text = contact.name
         text_phone.text = contact.phone
         text_temperament.text = contact.temperament

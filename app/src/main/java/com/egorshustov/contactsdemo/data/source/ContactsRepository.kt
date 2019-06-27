@@ -1,10 +1,8 @@
 package com.egorshustov.contactsdemo.data.source
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.egorshustov.contactsdemo.data.Contact
-import com.egorshustov.contactsdemo.data.source.local.AppDatabase
 import com.egorshustov.contactsdemo.data.source.local.ContactsDao
 import com.egorshustov.contactsdemo.data.source.remote.NetworkApi
 import com.egorshustov.contactsdemo.utils.TimeUtils
@@ -14,15 +12,10 @@ import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.delay
 import retrofit2.Response
 
-class ContactsRepository(application: Application) {
-    private val contactDao: ContactsDao
+class ContactsRepository(
+    private val contactDao: ContactsDao,
     private val networkApi: NetworkApi
-
-    init {
-        val database = AppDatabase.getInstance(application)
-        contactDao = database.contactDao()
-        networkApi = NetworkApi.create()
-    }
+) {
 
     suspend fun updateContacts(checkFetchTime: Boolean, publishResponseMessage: PublishSubject<String>) {
         Log.d(TAG, "updateContacts: ${Thread.currentThread().name}")
@@ -80,8 +73,17 @@ class ContactsRepository(application: Application) {
         return contactDao.getLiveContacts(filterText)
     }
 
-    private companion object {
-        const val MAX_INTERVAL_IN_SECONDS = 60
-        const val TAG = "ContactsRepository"
+    companion object {
+        private const val MAX_INTERVAL_IN_SECONDS = 60
+        private const val TAG = "ContactsRepository"
+
+        private var INSTANCE: ContactsRepository? = null
+
+        @JvmStatic
+        fun getInstance(contactDao: ContactsDao, networkApi: NetworkApi) =
+            INSTANCE ?: synchronized(ContactsRepository::class.java) {
+                INSTANCE ?: ContactsRepository(contactDao, networkApi)
+                    .also { INSTANCE = it }
+            }
     }
 }

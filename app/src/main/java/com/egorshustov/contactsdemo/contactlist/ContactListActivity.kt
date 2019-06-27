@@ -7,12 +7,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.ViewModelProviders
 import com.egorshustov.contactsdemo.R
 import com.egorshustov.contactsdemo.contact.ContactActivity
 import com.egorshustov.contactsdemo.data.Contact
 import com.egorshustov.contactsdemo.data.source.ThemesRepository.Companion.GREEN_THEME_ID
 import com.egorshustov.contactsdemo.utils.ConstantsUtils.EXTRA_CONTACT
+import com.egorshustov.contactsdemo.utils.obtainViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_contact_list.*
 import kotlinx.android.synthetic.main.app_bar_contact_list.*
@@ -23,7 +23,7 @@ class ContactListActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        contactListViewModel = ViewModelProviders.of(this).get(ContactListViewModel::class.java)
+        contactListViewModel = obtainViewModel()
         setTheme(getCurrentTheme())
         setContentView(R.layout.activity_contact_list)
         setSupportActionBar(toolbar_contact_list)
@@ -31,6 +31,8 @@ class ContactListActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         setDrawerListeners()
         setViewsListeners()
     }
+
+    fun obtainViewModel(): ContactListViewModel = obtainViewModel(ContactListViewModel::class.java)
 
     override fun onResume() {
         super.onResume()

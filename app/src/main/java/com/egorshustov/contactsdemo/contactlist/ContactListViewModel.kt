@@ -1,10 +1,9 @@
 package com.egorshustov.contactsdemo.contactlist
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.ViewModel
 import com.egorshustov.contactsdemo.data.Contact
 import com.egorshustov.contactsdemo.data.source.ContactsRepository
 import com.egorshustov.contactsdemo.data.source.ThemesRepository
@@ -17,10 +16,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-class ContactListViewModel(context: Application) : AndroidViewModel(context) {
-    private val contactsRepository = ContactsRepository(context)
-    private val themesRepository = ThemesRepository(context)
-
+class ContactListViewModel(
+    private val contactsRepository: ContactsRepository,
+    private val themesRepository: ThemesRepository
+) : ViewModel() {
     var mediatorLiveContacts = MediatorLiveData<List<Contact>>()
     var liveContacts: LiveData<List<Contact>?>? = null
     private val publishUpdateContactsResponse = PublishSubject.create<String>()
