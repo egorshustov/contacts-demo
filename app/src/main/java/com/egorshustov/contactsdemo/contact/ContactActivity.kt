@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.egorshustov.contactsdemo.R
 import com.egorshustov.contactsdemo.data.Contact
-import com.egorshustov.contactsdemo.data.source.ThemesRepository
 import com.egorshustov.contactsdemo.utils.ConstantsUtils.EXTRA_CONTACT
+import com.egorshustov.contactsdemo.utils.ThemesUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils.unixSecondsToDateString
 import com.egorshustov.contactsdemo.utils.obtainViewModel
 import kotlinx.android.synthetic.main.activity_contact.*
@@ -28,7 +28,7 @@ class ContactActivity : AppCompatActivity() {
 
     private fun getCurrentTheme(): Int {
         return when (contactViewModel.getCurrentThemeID()) {
-            ThemesRepository.GREEN_THEME_ID -> {
+            ThemesUtils.GREEN_THEME_ID -> {
                 R.style.AppTheme_NoActionBar_Green
             }
             else -> {

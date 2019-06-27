@@ -2,6 +2,9 @@ package com.egorshustov.contactsdemo.data.source
 
 import android.content.Context
 import android.preference.PreferenceManager.getDefaultSharedPreferences
+import com.egorshustov.contactsdemo.utils.ThemesUtils.APP_COLOR_THEME
+import com.egorshustov.contactsdemo.utils.ThemesUtils.GREEN_THEME_ID
+import com.egorshustov.contactsdemo.utils.ThemesUtils.THEMES_COUNT
 
 class ThemesRepository(private val context: Context) {
     fun setNextThemeId() {
@@ -13,11 +16,4 @@ class ThemesRepository(private val context: Context) {
     }
 
     fun getCurrentThemeID() = getDefaultSharedPreferences(context).getInt(APP_COLOR_THEME, GREEN_THEME_ID)
-
-    companion object {
-        const val APP_COLOR_THEME = "com.egorshustov.contactsdemo.APP_COLOR_THEME"
-        const val GREEN_THEME_ID = 0
-        const val BLUE_THEME_ID = 1
-        const val THEMES_COUNT = 2
-    }
 }

@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Url
 
-interface NetworkApi {
+interface ContactsRetrofit {
     @GET
     suspend fun getContacts(@Url url: String): Response<List<Contact>?>
 
@@ -18,12 +18,12 @@ interface NetworkApi {
             "https://raw.githubusercontent.com/SkbkonturMobile/mobile-test-droid/master/json/generated-03.json"
         )
 
-        fun create(): NetworkApi {
+        fun create(): ContactsRetrofit {
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://raw.githubusercontent.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-            return retrofit.create(NetworkApi::class.java)
+            return retrofit.create(ContactsRetrofit::class.java)
         }
     }
 }

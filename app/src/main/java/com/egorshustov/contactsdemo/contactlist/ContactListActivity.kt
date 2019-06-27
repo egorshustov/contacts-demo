@@ -10,8 +10,8 @@ import androidx.core.view.GravityCompat
 import com.egorshustov.contactsdemo.R
 import com.egorshustov.contactsdemo.contact.ContactActivity
 import com.egorshustov.contactsdemo.data.Contact
-import com.egorshustov.contactsdemo.data.source.ThemesRepository.Companion.GREEN_THEME_ID
 import com.egorshustov.contactsdemo.utils.ConstantsUtils.EXTRA_CONTACT
+import com.egorshustov.contactsdemo.utils.ThemesUtils
 import com.egorshustov.contactsdemo.utils.obtainViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_contact_list.*
@@ -41,7 +41,7 @@ class ContactListActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun getCurrentTheme(): Int {
         return when (contactListViewModel.getCurrentThemeID()) {
-            GREEN_THEME_ID -> {
+            ThemesUtils.GREEN_THEME_ID -> {
                 R.style.AppTheme_NoActionBar_Green
             }
             else -> {

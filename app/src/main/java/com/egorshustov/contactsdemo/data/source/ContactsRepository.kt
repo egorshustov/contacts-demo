@@ -4,17 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.egorshustov.contactsdemo.data.Contact
 import com.egorshustov.contactsdemo.data.source.local.ContactsDao
-import com.egorshustov.contactsdemo.data.source.remote.NetworkApi
+import com.egorshustov.contactsdemo.data.source.remote.ContactsRemoteDataSource
+import com.egorshustov.contactsdemo.utils.InjectorUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils.MILLISECONDS_IN_SECOND
 import com.egorshustov.contactsdemo.utils.TimeUtils.timeStringToUnixSeconds
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.delay
-import retrofit2.Response
 
-class ContactsRepository(
+class ContactsRepository private constructor(
     private val contactDao: ContactsDao,
-    private val networkApi: NetworkApi
+    private val contactsRemoteDataSource: ContactsRemoteDataSource
 ) {
 
     suspend fun updateContacts(checkFetchTime: Boolean, publishResponseMessage: PublishSubject<String>) {
@@ -30,25 +30,20 @@ class ContactsRepository(
             delay(500)
         }
 
-        NetworkApi.contactsUrlList.forEach lit@{ contactsUrl ->
-            var response: Response<List<Contact>?>? = null
-            try {
-                Log.d(TAG, "Update contacts from $contactsUrl")
-                response = networkApi.getContacts(contactsUrl)
-            } catch (t: Throwable) {
-                Log.d(TAG, "publishResponseMessage: ${t.message.toString()}")
-                publishResponseMessage.onNext(t.message.toString())
+        contactsRemoteDataSource.getContacts(object : ContactsRemoteDataSource.LoadContactsCallback {
+            override fun onContactsLoaded(successMessage: String, contactList: List<Contact>?) {
+                Log.d(TAG, "publishResponseMessage: $successMessage")
+                publishResponseMessage.onNext(successMessage)
+                contactList ?: return
+                contactDao.insertContacts(fillContactListData(contactList))
             }
 
-            response ?: return@lit
-            Log.d(TAG, "publishResponseMessage: ${response.message()}")
-            publishResponseMessage.onNext(response.message())
-            val contactList: List<Contact>? = response.body()
-            if (!response.isSuccessful || contactList == null) {
-                return@lit
+            override fun onDataNotAvailable(errorMessage: String) {
+                Log.d(TAG, "publishResponseMessage: $errorMessage")
+                publishResponseMessage.onNext(errorMessage)
             }
-            contactDao.insertContacts(fillContactListData(contactList))
-        }
+
+        })
     }
 
     private fun fillContactListData(contactList: List<Contact>): List<Contact> {
@@ -80,9 +75,9 @@ class ContactsRepository(
         private var INSTANCE: ContactsRepository? = null
 
         @JvmStatic
-        fun getInstance(contactDao: ContactsDao, networkApi: NetworkApi) =
+        fun getInstance(contactDao: ContactsDao) =
             INSTANCE ?: synchronized(ContactsRepository::class.java) {
-                INSTANCE ?: ContactsRepository(contactDao, networkApi)
+                INSTANCE ?: ContactsRepository(contactDao, InjectorUtils.bindContactsRemoteDataSource())
                     .also { INSTANCE = it }
             }
     }
