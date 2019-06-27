@@ -18,4 +18,3 @@ data class EducationPeriod(
     @ColumnInfo(name = "end_unix_seconds")
     var endUnixSeconds: Int?
 ) : Parcelable
-

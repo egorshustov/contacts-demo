@@ -30,8 +30,6 @@ class ContactListActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         setDrawerListeners()
         setViewsListeners()
-
-        contactListViewModel.updateContacts(true)
     }
 
     override fun onResume() {

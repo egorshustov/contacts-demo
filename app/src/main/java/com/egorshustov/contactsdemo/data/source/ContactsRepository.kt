@@ -3,7 +3,6 @@ package com.egorshustov.contactsdemo.data.source
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.egorshustov.contactsdemo.data.Contact
 import com.egorshustov.contactsdemo.data.source.local.AppDatabase
 import com.egorshustov.contactsdemo.data.source.local.ContactsDao
@@ -11,6 +10,8 @@ import com.egorshustov.contactsdemo.data.source.remote.NetworkApi
 import com.egorshustov.contactsdemo.utils.TimeUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils.MILLISECONDS_IN_SECOND
 import com.egorshustov.contactsdemo.utils.TimeUtils.timeStringToUnixSeconds
+import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.delay
 import retrofit2.Response
 
 class ContactsRepository(application: Application) {
@@ -23,27 +24,32 @@ class ContactsRepository(application: Application) {
         networkApi = NetworkApi.create()
     }
 
-    suspend fun updateContacts(checkFetchTime: Boolean, liveResponseMessage: MutableLiveData<String>) {
+    suspend fun updateContacts(checkFetchTime: Boolean, publishResponseMessage: PublishSubject<String>) {
         Log.d(TAG, "updateContacts: ${Thread.currentThread().name}")
         if (checkFetchTime) {
             val oldestFetchTimeInUnixMillis = contactDao.getOldestFetchTime() ?: 0
             val currentTimeInUnixMillis = TimeUtils.getCurrentTimeInUnixMillis()
 
             if (currentTimeInUnixMillis - oldestFetchTimeInUnixMillis < MAX_INTERVAL_IN_SECONDS * MILLISECONDS_IN_SECOND) {
+                Log.d(TAG, "Do not update contacts")
                 return
             }
+            delay(500)
         }
 
         NetworkApi.contactsUrlList.forEach lit@{ contactsUrl ->
             var response: Response<List<Contact>?>? = null
             try {
+                Log.d(TAG, "Update contacts from $contactsUrl")
                 response = networkApi.getContacts(contactsUrl)
-            } catch (e: Exception) {
-                liveResponseMessage.postValue(e.toString())
+            } catch (t: Throwable) {
+                Log.d(TAG, "publishResponseMessage: ${t.message.toString()}")
+                publishResponseMessage.onNext(t.message.toString())
             }
 
             response ?: return@lit
-            liveResponseMessage.postValue(response.message())
+            Log.d(TAG, "publishResponseMessage: ${response.message()}")
+            publishResponseMessage.onNext(response.message())
             val contactList: List<Contact>? = response.body()
             if (!response.isSuccessful || contactList == null) {
                 return@lit
