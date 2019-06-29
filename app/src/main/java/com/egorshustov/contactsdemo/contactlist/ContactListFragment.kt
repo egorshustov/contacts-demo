@@ -48,7 +48,7 @@ class ContactListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun observeMediatorLiveContacts() {
-        contactListViewModel.mediatorLiveContacts.observe(viewLifecycleOwner, Observer { contactList ->
+        contactListViewModel.getMediatorLiveContacts().observe(viewLifecycleOwner, Observer { contactList ->
             if (!contactList.isNullOrEmpty()) {
                 fragmentView.progress_contacts.visibility = View.GONE
             }
@@ -57,23 +57,11 @@ class ContactListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun observeLiveUpdateContactsResponse() {
-        contactListViewModel.getLiveUpdateContactsResponse().observe(viewLifecycleOwner, Observer {
-            Log.d(TAG, "observeLiveUpdateContactsResponse: ${Thread.currentThread().name}")
-            Log.d(TAG, "updateContactsResponse: $it")
+        contactListViewModel.getLiveUpdateContactsResponseMessage().observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "observeLiveUpdateContactsResponse thread: ${Thread.currentThread().name}")
             fragmentView.layout_swipe_refresh.isRefreshing = false
-            when {
-                it == "OK" -> {
-                }
-                (it.contains("ConnectException") || it.contains("TimeoutException") || it.contains("UnknownHostException")) -> {
-                    Snackbar.make(
-                        fragmentView,
-                        "Ошибка соединения: отсутствует подключение к сети или сервер недоступен",
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-                else -> {
-                    Snackbar.make(fragmentView, "Ошибка $it", Snackbar.LENGTH_LONG).show()
-                }
+            it.getErrorMessage()?.let { errorMessage ->
+                Snackbar.make(fragmentView, errorMessage, Snackbar.LENGTH_LONG).show()
             }
         })
     }

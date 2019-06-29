@@ -5,44 +5,44 @@ import androidx.lifecycle.LiveData
 import com.egorshustov.contactsdemo.data.Contact
 import com.egorshustov.contactsdemo.data.source.local.ContactsDao
 import com.egorshustov.contactsdemo.data.source.remote.ContactsRemoteDataSource
+import com.egorshustov.contactsdemo.data.source.remote.ResponseMessage
 import com.egorshustov.contactsdemo.utils.InjectorUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils.MILLISECONDS_IN_SECOND
 import com.egorshustov.contactsdemo.utils.TimeUtils.timeStringToUnixSeconds
 import io.reactivex.subjects.PublishSubject
-import kotlinx.coroutines.delay
 
 class ContactsRepository private constructor(
     private val contactDao: ContactsDao,
     private val contactsRemoteDataSource: ContactsRemoteDataSource
 ) {
+    fun cacheIsOutdated(): Boolean {
+        Log.d(TAG, "cacheIsOutdated thread: ${Thread.currentThread().name}")
+        val oldestFetchTimeInUnixMillis = contactDao.getOldestFetchTime() ?: 0
+        val currentTimeInUnixMillis = TimeUtils.getCurrentTimeInUnixMillis()
 
-    suspend fun updateContacts(checkFetchTime: Boolean, publishResponseMessage: PublishSubject<String>) {
-        Log.d(TAG, "updateContacts: ${Thread.currentThread().name}")
-        if (checkFetchTime) {
-            val oldestFetchTimeInUnixMillis = contactDao.getOldestFetchTime() ?: 0
-            val currentTimeInUnixMillis = TimeUtils.getCurrentTimeInUnixMillis()
-
-            if (currentTimeInUnixMillis - oldestFetchTimeInUnixMillis < MAX_INTERVAL_IN_SECONDS * MILLISECONDS_IN_SECOND) {
-                Log.d(TAG, "Do not update contacts")
-                return
-            }
-            delay(500)
+        if (currentTimeInUnixMillis - oldestFetchTimeInUnixMillis < MAX_INTERVAL_IN_SECONDS * MILLISECONDS_IN_SECOND) {
+            return false
         }
+        return true
+    }
 
-        contactsRemoteDataSource.getContacts(object : ContactsRemoteDataSource.LoadContactsCallback {
-            override fun onContactsLoaded(successMessage: String, contactList: List<Contact>?) {
-                Log.d(TAG, "publishResponseMessage: $successMessage")
-                publishResponseMessage.onNext(successMessage)
+    suspend fun updateContacts(
+        contactsUrlList: List<String>,
+        publishUpdateContactsResponse: PublishSubject<ResponseMessage>
+    ) {
+        Log.d(TAG, "updateContacts thread: ${Thread.currentThread().name}")
+        contactsRemoteDataSource.getContacts(contactsUrlList, object : ContactsRemoteDataSource.LoadContactsCallback {
+            override fun onServerResponseGot(message: ResponseMessage) {
+                Log.d(TAG, "publishUpdateContactsResponse: ${message.getErrorMessage() ?: "OK"}")
+                publishUpdateContactsResponse.onNext(message)
+            }
+
+            override fun onContactsLoaded(contactList: List<Contact>?) {
+                Log.d(TAG, "onContactsLoaded")
                 contactList ?: return
                 contactDao.insertContacts(fillContactListData(contactList))
             }
-
-            override fun onDataNotAvailable(errorMessage: String) {
-                Log.d(TAG, "publishResponseMessage: $errorMessage")
-                publishResponseMessage.onNext(errorMessage)
-            }
-
         })
     }
 

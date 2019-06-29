@@ -6,10 +6,10 @@ interface ContactsRemoteDataSource {
 
     interface LoadContactsCallback {
 
-        fun onContactsLoaded(successMessage: String, contactList: List<Contact>?)
+        fun onServerResponseGot(message: ResponseMessage)
 
-        fun onDataNotAvailable(errorMessage: String)
+        fun onContactsLoaded(contactList: List<Contact>?)
     }
 
-    suspend fun getContacts(callback: LoadContactsCallback)
+    suspend fun getContacts(contactsUrlList: List<String>, loadContactsCallback: LoadContactsCallback)
 }

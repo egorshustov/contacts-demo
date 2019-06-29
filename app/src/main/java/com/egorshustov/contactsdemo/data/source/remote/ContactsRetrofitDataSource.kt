@@ -3,17 +3,30 @@ package com.egorshustov.contactsdemo.data.source.remote
 class ContactsRetrofitDataSource private constructor(
     private val contactsRetrofit: ContactsRetrofit
 ) : ContactsRemoteDataSource {
-    override suspend fun getContacts(callback: ContactsRemoteDataSource.LoadContactsCallback) {
-        ContactsRetrofit.contactsUrlList.forEach { contactsUrl ->
+    override suspend fun getContacts(
+        contactsUrlList: List<String>,
+        loadContactsCallback: ContactsRemoteDataSource.LoadContactsCallback
+    ) {
+        contactsUrlList.forEach { contactsUrl ->
             try {
                 val response = contactsRetrofit.getContacts(contactsUrl)
                 if (response.isSuccessful) {
-                    callback.onContactsLoaded(response.message(), response.body())
+                    loadContactsCallback.onContactsLoaded(response.body())
+                    loadContactsCallback.onServerResponseGot(
+                        ResponseMessage.Success(response.message())
+                    )
                 } else {
-                    callback.onDataNotAvailable(response.message())
+                    loadContactsCallback.onServerResponseGot(
+                        ResponseMessage.Error(
+                            response.message(),
+                            null
+                        )
+                    )
                 }
-            } catch (t: Throwable) {
-                callback.onDataNotAvailable(t.message.toString())
+            } catch (throwable: Throwable) {
+                loadContactsCallback.onServerResponseGot(
+                    ResponseMessage.Error(null, throwable)
+                )
             }
         }
     }
