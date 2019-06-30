@@ -2,7 +2,6 @@ package com.egorshustov.contactsdemo.data
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
@@ -17,8 +16,10 @@ data class Contact(
     val height: Float?,
     val biography: String?,
     val temperament: String?,
-    @Embedded
-    val educationPeriod: EducationPeriod?,
+    @ColumnInfo(name = "education_start_unix_millis")
+    var educationStartUnixMillis: Long?,
+    @ColumnInfo(name = "education_end_unix_millis")
+    var educationEndUnixMillis: Long?,
     @ColumnInfo(name = "fetch_time_unix_millis")
     var fetchTimeUnixMillis: Long?
 ) : Parcelable {

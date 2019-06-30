@@ -4,12 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.egorshustov.contactsdemo.data.Contact
 import com.egorshustov.contactsdemo.data.source.local.ContactsDao
+import com.egorshustov.contactsdemo.data.source.remote.ContactJson
 import com.egorshustov.contactsdemo.data.source.remote.ContactsRemoteDataSource
 import com.egorshustov.contactsdemo.data.source.remote.ResponseMessage
 import com.egorshustov.contactsdemo.utils.InjectorUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils.MILLISECONDS_IN_SECOND
-import com.egorshustov.contactsdemo.utils.TimeUtils.timeStringToUnixSeconds
 import io.reactivex.subjects.PublishSubject
 
 class ContactsRepository private constructor(
@@ -38,26 +38,29 @@ class ContactsRepository private constructor(
                 publishUpdateContactsResponse.onNext(message)
             }
 
-            override fun onContactsLoaded(contactList: List<Contact>?) {
+            override fun onContactsLoaded(contactJsonList: List<ContactJson>?) {
                 Log.d(TAG, "onContactsLoaded")
-                contactList ?: return
-                contactDao.insertContacts(fillContactListData(contactList))
+                contactJsonList ?: return
+                contactDao.insertContacts(mapJsonToContact(contactJsonList))
             }
         })
     }
 
-    private fun fillContactListData(contactList: List<Contact>): List<Contact> {
+    private fun mapJsonToContact(contactJsonList: List<ContactJson>): List<Contact> {
         val fetchTimeInUnixMillis = TimeUtils.getCurrentTimeInUnixMillis()
-        val timePattern = "yyyy-MM-dd'T'HH:mm:ssZ"
-
-        contactList.forEach { contact ->
-            contact.fetchTimeUnixMillis = fetchTimeInUnixMillis
-            contact.educationPeriod?.startUnixSeconds =
-                timeStringToUnixSeconds(timePattern, contact.educationPeriod?.startDateTimeString)
-            contact.educationPeriod?.endUnixSeconds =
-                timeStringToUnixSeconds(timePattern, contact.educationPeriod?.endDateTimeString)
+        return contactJsonList.map {
+            Contact(
+                it.id,
+                it.name,
+                it.phone,
+                it.height,
+                it.biography,
+                it.temperament,
+                it.educationPeriod?.start?.time,
+                it.educationPeriod?.end?.time,
+                fetchTimeInUnixMillis
+            )
         }
-        return contactList
     }
 
     fun getLiveContacts(filter: String?): LiveData<List<Contact>?> {

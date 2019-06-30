@@ -10,7 +10,7 @@ import com.egorshustov.contactsdemo.R
 import com.egorshustov.contactsdemo.data.Contact
 import com.egorshustov.contactsdemo.utils.ConstantsUtils.EXTRA_CONTACT
 import com.egorshustov.contactsdemo.utils.ThemesUtils
-import com.egorshustov.contactsdemo.utils.TimeUtils.unixSecondsToDateString
+import com.egorshustov.contactsdemo.utils.TimeUtils.unixMillisToDateString
 import com.egorshustov.contactsdemo.utils.obtainViewModel
 import kotlinx.android.synthetic.main.activity_contact.*
 
@@ -59,8 +59,8 @@ class ContactActivity : AppCompatActivity() {
         text_name.text = contact.name
         text_phone.text = contact.phone
         text_temperament.text = contact.temperament
-        val educationPeriodText = unixSecondsToDateString(contact.educationPeriod?.startUnixSeconds) +
-                " - " + unixSecondsToDateString(contact.educationPeriod?.endUnixSeconds)
+        val educationPeriodText = unixMillisToDateString(contact.educationStartUnixMillis) +
+                " - " + unixMillisToDateString(contact.educationEndUnixMillis)
         text_education_period.text = educationPeriodText
         text_biography.text = contact.biography
     }
