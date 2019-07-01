@@ -3,7 +3,9 @@ package com.egorshustov.contactsdemo.contact
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -44,6 +46,11 @@ class ContactDetailFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         (activity as ContactListActivity).search_contact_list.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.unbind()
     }
 
     private fun setListeners() {
