@@ -31,7 +31,9 @@ class ContactListViewModel(
     }
 
     fun filterContacts(filter: String?) {
-        liveContacts?.let { mediatorLiveContacts.removeSource(it) }
+        liveContacts?.let {
+            mediatorLiveContacts.removeSource(it)
+        }
         liveContacts = contactsRepository.getLiveContacts(filter)
         liveContacts?.let {
             mediatorLiveContacts.addSource(it) { list ->

@@ -16,7 +16,7 @@
             android:usesCleartextTraffic="true"
             tools:targetApi="m">
         <activity
-                android:name=".contactlist.ContactListActivity"
+                android:name=".ContactListActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar.Green">
             <intent-filter>
@@ -36,10 +36,6 @@
                         android:scheme="http"/>
             </intent-filter>
         </activity>
-
-        <activity
-                android:name=".contact.ContactActivity"
-                android:theme="@style/AppTheme.NoActionBar.Green"/>
     </application>
 
 </manifest>

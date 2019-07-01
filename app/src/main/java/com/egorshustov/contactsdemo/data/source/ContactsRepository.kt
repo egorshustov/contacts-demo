@@ -10,6 +10,8 @@ import com.egorshustov.contactsdemo.data.source.remote.ResponseMessage
 import com.egorshustov.contactsdemo.utils.InjectorUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils
 import com.egorshustov.contactsdemo.utils.TimeUtils.MILLISECONDS_IN_SECOND
+import com.egorshustov.contactsdemo.utils.TimeUtils.unixMillisToDateString
+import io.reactivex.Flowable
 import io.reactivex.subjects.PublishSubject
 
 class ContactsRepository private constructor(
@@ -56,12 +58,13 @@ class ContactsRepository private constructor(
                 it.height,
                 it.biography,
                 it.temperament,
-                it.educationPeriod?.start?.time,
-                it.educationPeriod?.end?.time,
+                unixMillisToDateString(it.educationPeriod?.start?.time) + " - " + unixMillisToDateString(it.educationPeriod?.end?.time),
                 fetchTimeInUnixMillis
             )
         }
     }
+
+    fun getLiveContact(contactId: String) = contactDao.getLiveContact(contactId)
 
     fun getLiveContacts(filter: String?): LiveData<List<Contact>?> {
         val filterText = when {

@@ -9,6 +9,9 @@ import com.egorshustov.contactsdemo.data.Contact
 
 @Dao
 interface ContactsDao {
+    @Query("select * from contacts where id = :contactId")
+    fun getLiveContact(contactId: String): LiveData<Contact>
+
     @Query("select * from contacts where (:filter is null or name like :filter or phone like :filter) order by name")
     fun getLiveContacts(filter: String?): LiveData<List<Contact>?>
 

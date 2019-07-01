@@ -1,32 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/drawer_contact_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:background="?themeColorTertiary"
-        tools:openDrawer="start">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include
-            layout="@layout/app_bar_contact_list"
+    <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer_contact_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_contact_list"
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            android:background="?attr/themeNavigationItemBackgroundColor"
-            app:headerLayout="@layout/nav_header_contact_list"
-            app:menu="@menu/activity_contact_list_drawer"
-            app:itemIconTint="@drawable/drawer_item_color"
-            app:itemTextColor="@drawable/drawer_item_color"
-            app:itemIconPadding="5dp"
-            android:theme="@style/NavigationStyle"/>
+            android:background="?themeColorTertiary">
 
-</androidx.drawerlayout.widget.DrawerLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:theme="@style/AppTheme.AppBarOverlay">
+
+                <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar_contact_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?attr/themeColorPrimary"
+                        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                    <androidx.appcompat.widget.SearchView
+                            android:id="@+id/search_contact_list"
+                            app:iconifiedByDefault="true"
+                            android:inputType="text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:queryBackground="?themeColorTertiary"
+                            android:theme="@style/SearchViewStyle"/>
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <fragment
+                    android:id="@+id/contacts_nav_fragment"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="true"
+                    app:navGraph="@navigation/nav_contacts"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+                android:id="@+id/nav_contact_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:fitsSystemWindows="true"
+                android:background="?attr/themeNavigationItemBackgroundColor"
+                app:headerLayout="@layout/nav_header_contact_list"
+                app:menu="@menu/menu_navigation"
+                app:itemIconTint="@drawable/drawer_item_color"
+                app:itemTextColor="@drawable/drawer_item_color"
+                app:itemIconPadding="5dp"
+                android:theme="@style/NavigationStyle"/>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</layout>

@@ -8,39 +8,40 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.egorshustov.contactsdemo.R
+import com.egorshustov.contactsdemo.ContactListActivity
+import com.egorshustov.contactsdemo.databinding.FragmentContactListBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_contact_list.view.*
+import kotlinx.android.synthetic.main.activity_contact_list.*
 
 class ContactListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
-    private lateinit var fragmentView: View
+
     private lateinit var contactListViewModel: ContactListViewModel
-    val contactListAdapter = ContactListAdapter()
+    private lateinit var binding: FragmentContactListBinding
+    private val contactListAdapter = ContactListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_contact_list, container, false)
-        val recyclerContacts: RecyclerView = fragmentView.findViewById(R.id.recycler_contacts)
-        recyclerContacts.layoutManager = LinearLayoutManager(activity)
-        recyclerContacts.setHasFixedSize(true)
-
-        recyclerContacts.adapter = contactListAdapter
-        return fragmentView
+        binding = FragmentContactListBinding.inflate(inflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+            layoutSwipeRefresh.setOnRefreshListener(this@ContactListFragment)
+            recyclerContacts.adapter = contactListAdapter
+        }
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        fragmentView.layout_swipe_refresh.setOnRefreshListener(this)
-        val fragmentActivity = activity as ContactListActivity
-        contactListViewModel = fragmentActivity.obtainViewModel()
-
+        contactListViewModel = (activity as ContactListActivity).getContactListViewModel()
         observeMediatorLiveContacts()
         observeLiveUpdateContactsResponse()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as ContactListActivity).search_contact_list.visibility = View.VISIBLE
     }
 
     override fun onRefresh() {
@@ -48,10 +49,8 @@ class ContactListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun observeMediatorLiveContacts() {
-        contactListViewModel.getMediatorLiveContacts().observe(viewLifecycleOwner, Observer { contactList ->
-            if (!contactList.isNullOrEmpty()) {
-                fragmentView.progress_contacts.visibility = View.GONE
-            }
+        contactListViewModel.getMediatorLiveContacts().observeForever(Observer { contactList ->
+            binding.hasContacts = !contactList.isNullOrEmpty()
             contactListAdapter.submitList(contactList)
         })
     }
@@ -59,16 +58,14 @@ class ContactListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun observeLiveUpdateContactsResponse() {
         contactListViewModel.getLiveUpdateContactsResponseMessage().observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "observeLiveUpdateContactsResponse thread: ${Thread.currentThread().name}")
-            fragmentView.layout_swipe_refresh.isRefreshing = false
+            binding.layoutSwipeRefresh.isRefreshing = false
             it.getErrorMessage()?.let { errorMessage ->
-                Snackbar.make(fragmentView, errorMessage, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_LONG).show()
             }
         })
     }
 
     companion object {
         private const val TAG = "ContactListFragment"
-        @JvmStatic
-        fun newInstance() = ContactListFragment()
     }
 }

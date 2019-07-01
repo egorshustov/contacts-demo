@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="clickListener"
+                type="android.view.View.OnClickListener"/>
+        <variable
+                name="viewModel"
+                type="com.egorshustov.contactsdemo.contact.ContactDetailViewModel"/>
+    </data>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".contact.ContactActivity"
+            android:background="?themeColorTertiary">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_contact_layout_padding">
+
+            <TextView
+                    android:id="@+id/text_name"
+                    android:textSize="@dimen/text_size_biggest"
+                    android:textColor="?themeTextColorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.contact.name}"
+                    android:padding="@dimen/activity_contact_text_padding"/>
+
+            <TextView
+                    android:id="@+id/text_phone"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="?themeTextColorClickable"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.contact.phone}"
+                    android:padding="@dimen/activity_contact_text_padding"/>
+
+            <TextView
+                    android:id="@+id/text_temperament"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="?themeTextColorSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.contact.temperament}"
+                    android:padding="@dimen/activity_contact_text_padding"/>
+
+            <TextView
+                    android:id="@+id/text_education_period"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="?themeTextColorSecondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.contact.educationPeriod}"
+                    android:padding="@dimen/activity_contact_text_padding"/>
+
+            <TextView
+                    android:id="@+id/text_biography"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="?themeTextColorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.contact.biography}"
+                    android:padding="@dimen/activity_contact_text_padding"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

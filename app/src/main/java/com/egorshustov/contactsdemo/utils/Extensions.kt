@@ -1,13 +1,12 @@
 package com.egorshustov.contactsdemo.utils
 
-/**
- * Various extension functions for AppCompatActivity.
- */
-
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import com.egorshustov.contactsdemo.ViewModelFactory
+import com.egorshustov.contactsdemo.contactlist.ContactListViewModel
+import com.egorshustov.contactsdemo.contactlist.ContactListViewModelFactory
 
-fun <T : ViewModel> AppCompatActivity.obtainViewModel(viewModelClass: Class<T>) =
-    ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(viewModelClass)
+fun AppCompatActivity.obtainContactListViewModel() =
+    ViewModelProviders.of(
+        this,
+        ContactListViewModelFactory.getInstance(application)
+    ).get(ContactListViewModel::class.java)

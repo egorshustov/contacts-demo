@@ -2,14 +2,14 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "acd8b92ef0828cce6df8454c35af0bd9",
+    "identityHash": "9389d3d3e8fd2be0b304a70e4db5e3e2",
     "entities": [
       {
         "tableName": "contacts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `phone` TEXT, `height` REAL, `biography` TEXT, `temperament` TEXT, `education_start_unix_millis` INTEGER, `education_end_unix_millis` INTEGER, `fetch_time_unix_millis` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `phone` TEXT, `height` REAL, `biography` TEXT, `temperament` TEXT, `educationPeriod` TEXT, `fetch_time_unix_millis` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "id",
+            "fieldPath": "contactId",
             "columnName": "id",
             "affinity": "TEXT",
             "notNull": true
@@ -45,15 +45,9 @@
             "notNull": false
           },
           {
-            "fieldPath": "educationStartUnixMillis",
-            "columnName": "education_start_unix_millis",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "educationEndUnixMillis",
-            "columnName": "education_end_unix_millis",
-            "affinity": "INTEGER",
+            "fieldPath": "educationPeriod",
+            "columnName": "educationPeriod",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -76,7 +70,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'acd8b92ef0828cce6df8454c35af0bd9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9389d3d3e8fd2be0b304a70e4db5e3e2')"
     ]
   }
 }

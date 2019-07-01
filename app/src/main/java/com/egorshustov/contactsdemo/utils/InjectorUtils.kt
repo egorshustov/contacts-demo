@@ -1,6 +1,8 @@
 package com.egorshustov.contactsdemo.utils
 
 import android.content.Context
+import com.egorshustov.contactsdemo.contact.ContactDetailViewModelFactory
+import com.egorshustov.contactsdemo.contactlist.ContactListViewModelFactory
 import com.egorshustov.contactsdemo.data.source.ContactsRepository
 import com.egorshustov.contactsdemo.data.source.ThemesRepository
 import com.egorshustov.contactsdemo.data.source.local.AppDatabase
@@ -21,5 +23,24 @@ object InjectorUtils {
 
     fun provideThemesRepository(context: Context): ThemesRepository {
         return ThemesRepository(context)
+    }
+
+    fun provideContactDetailViewModelFactory(
+        context: Context,
+        contactId: String
+    ): ContactDetailViewModelFactory {
+        return ContactDetailViewModelFactory(
+            provideContactsRepository(context),
+            contactId
+        )
+    }
+
+    fun provideContactListViewModelFactory(
+        context: Context
+    ): ContactListViewModelFactory {
+        return ContactListViewModelFactory(
+            provideContactsRepository(context),
+            provideThemesRepository(context)
+        )
     }
 }

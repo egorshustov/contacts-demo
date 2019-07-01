@@ -10,16 +10,14 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Contact(
     @PrimaryKey
-    val id: String,
+    @ColumnInfo(name = "id")
+    val contactId: String,
     val name: String?,
     val phone: String?,
     val height: Float?,
     val biography: String?,
     val temperament: String?,
-    @ColumnInfo(name = "education_start_unix_millis")
-    var educationStartUnixMillis: Long?,
-    @ColumnInfo(name = "education_end_unix_millis")
-    var educationEndUnixMillis: Long?,
+    val educationPeriod: String?,
     @ColumnInfo(name = "fetch_time_unix_millis")
     var fetchTimeUnixMillis: Long?
 ) : Parcelable {
