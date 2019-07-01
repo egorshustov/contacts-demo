@@ -41,7 +41,7 @@ class ContactListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onResume() {
         super.onResume()
-        (activity as ContactListActivity).search_contact_list.visibility = View.VISIBLE
+        (activity as ContactListActivity).edit_filter.visibility = View.VISIBLE
     }
 
     override fun onRefresh() {
@@ -49,7 +49,7 @@ class ContactListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun observeMediatorLiveContacts() {
-        contactListViewModel.getMediatorLiveContacts().observeForever(Observer { contactList ->
+        contactListViewModel.getMediatorLiveContacts().observe(viewLifecycleOwner, Observer { contactList ->
             binding.hasContacts = !contactList.isNullOrEmpty()
             contactListAdapter.submitList(contactList)
         })

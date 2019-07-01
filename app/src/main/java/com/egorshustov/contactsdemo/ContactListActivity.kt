@@ -1,8 +1,9 @@
 package com.egorshustov.contactsdemo
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -62,16 +63,17 @@ class ContactListActivity : AppCompatActivity() {
             recreate()
             true
         }
-
-        binding.searchContactList.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+        binding.editFilter.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                contactListViewModel.filterContacts(s.toString())
             }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                contactListViewModel.filterContacts(newText)
-                return false
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
         })
     }
 

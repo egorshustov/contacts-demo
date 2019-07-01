@@ -11,4 +11,5 @@
     <attr name="themeNavigationItemBackgroundColor" format="reference"/>
     <attr name="themeNavigationSelectedTextColor" format="reference"/>
     <attr name="themeContactItemBorderColor" format="reference"/>
+    <attr name="themeSearchViewHintTextColor" format="reference"/>
 </resources>

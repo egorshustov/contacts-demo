@@ -23,6 +23,7 @@
         <item name="themeNavigationItemBackgroundColor">@color/colorSnow</item>
         <item name="themeNavigationSelectedTextColor">@color/colorComo</item>
         <item name="themeContactItemBorderColor">@color/colorWhisper</item>
+        <item name="themeSearchViewHintTextColor">@color/colorDarkGrey</item>
     </style>
 
     <style name="AppTheme.NoActionBar.Blue">
@@ -37,12 +38,14 @@
         <item name="themeNavigationItemBackgroundColor">@color/colorMidnightExpress</item>
         <item name="themeNavigationSelectedTextColor">@color/colorDodgerBlue</item>
         <item name="themeContactItemBorderColor">@color/colorMidnightExpress</item>
+        <item name="themeSearchViewHintTextColor">@color/colorWhite</item>
     </style>
 
-    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+    <style name="EditTextStyle">
+        <item name="android:background">@drawable/edit_background</item>
         <item name="android:textColor">?themeTextColorPrimary</item>
-        <item name="android:textColorHint">?themeTextColorPrimary</item>
-        <item name="android:editTextColor">?themeTextColorPrimary</item>
+        <item name="android:textColorHint">?themeSearchViewHintTextColor</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
     <style name="NavigationStyle">

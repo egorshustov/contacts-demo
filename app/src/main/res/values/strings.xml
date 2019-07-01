@@ -9,7 +9,4 @@
 
     <string name="nav_contact_list">Контакты</string>
     <string name="nav_theme_change">Сменить тему</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
