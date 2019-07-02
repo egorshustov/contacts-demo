@@ -18,7 +18,8 @@
         <activity
                 android:name=".ContactListActivity"
                 android:label="@string/app_name"
-                android:theme="@style/AppTheme.NoActionBar.Green">
+                android:theme="@style/AppTheme.NoActionBar.Green"
+                android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
