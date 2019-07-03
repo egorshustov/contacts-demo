@@ -12,9 +12,9 @@ interface ContactsRetrofit {
 
     companion object Factory {
         val contactsUrlList = listOf(
-            "https://raw.githubusercontent.com/SkbkonturMobile/mobile-test-droid/master/json/generated-01.json",
-            "https://raw.githubusercontent.com/SkbkonturMobile/mobile-test-droid/master/json/generated-02.json",
-            "https://raw.githubusercontent.com/SkbkonturMobile/mobile-test-droid/master/json/generated-03.json"
+            "https://raw.githubusercontent.com/egorshustov/contacts-demo/master/json/generated-01.json",
+            "https://raw.githubusercontent.com/egorshustov/contacts-demo/master/json/generated-02.json",
+            "https://raw.githubusercontent.com/egorshustov/contacts-demo/master/json/generated-03.json"
         )
 
         fun create(): ContactsRetrofit {
